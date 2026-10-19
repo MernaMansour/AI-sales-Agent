@@ -1,0 +1,94 @@
+{
+  "name": "error",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b17bb045-bca3-4395-ac5b-caee5fe8ab72",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "cvqXudjRbMFa8BZs",
+          "mode": "list",
+          "cachedResultName": "errors",
+          "cachedResultUrl": "/projects/nwhZWROWadmDHujM/datatables/cvqXudjRbMFa8BZs"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "workfloww_name": "={{ $json.workflow.name }}",
+            "Message": "={{ $json.execution.error.message }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workfloww_name",
+              "displayName": "workfloww_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "d75b6ceb-437e-40d4-8b0d-90572e311a3b",
+      "name": "Insert row"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "200d530a-87f9-40be-8d87-c867dac74e16",
+  "meta": {
+    "instanceId": "6b292b15077ba7f17ad2f512033f13b770464b6d9300d84304cf171cce34feb2"
+  },
+  "nodeGroups": [],
+  "id": "w0c3woF0KNIC7fs9",
+  "tags": []
+}

@@ -1,0 +1,196 @@
+{
+  "name": "knowledge based",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "question"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8423baab-439e-4ac4-acf5-c5f5177b36f7",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "https://github.com/MernaMansour",
+          "mode": "url",
+          "__regex": "https:\\/\\/(?:[^/]+)\\/([-_0-9a-zA-Z]+)"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "AI-sales-Agent",
+          "mode": "list",
+          "cachedResultName": "AI-sales-Agent",
+          "cachedResultUrl": "https://github.com/MernaMansour/AI-sales-Agent"
+        },
+        "filePath": "Merna_Training_Knowledge_Base.md",
+        "additionalParameters": {}
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        176,
+        0
+      ],
+      "id": "e3345fda-6709-47ad-ac25-7d8a2cad2573",
+      "name": "Get a file",
+      "webhookId": "1848b46a-eb0f-40d1-963a-180226ec0fd9",
+      "credentials": {
+        "githubOAuth2Api": {
+          "id": "Qw1zBZlIsleXOdYH",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "destinationKey": "=text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        0
+      ],
+      "id": "fcd65516-128b-4fb2-8b5a-cab952554ad7",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "models/gemini-3-flash-preview"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Based on the following training center knowledge base, what training courses are available, how long does each course take, and who is the target audience?\n\nKnowledge Base:\n{{ $json.text }}\n\nAnswer clearly and accurately using only the provided knowledge base. Do not invent any information."
+            },
+            {}
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "systemMessage": "=you are knowledge based fo getting answers to the user question provide\nanswers only from this information:  {{ $json.text }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        0
+      ],
+      "id": "06e1cb31-129d-452c-9a59-797086846c4b",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "u4OS6PVk3xQpg7WS",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "862b91a0-2f9c-44bb-b737-e90a36e6f0f0",
+              "name": "answer",
+              "value": "={{ $json.content.parts[0].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        624,
+        0
+      ],
+      "id": "67121326-cd2e-4990-87a6-6b3bff1bf241",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "question": "what are the courses"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        []
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "f04183e0-8af1-471b-8cbb-77f45d0248ec",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6b292b15077ba7f17ad2f512033f13b770464b6d9300d84304cf171cce34feb2"
+  },
+  "nodeGroups": [],
+  "id": "ClCbS9v7brrKqtcS",
+  "tags": []
+}
